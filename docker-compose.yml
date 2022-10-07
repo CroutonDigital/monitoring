@@ -1,0 +1,32 @@
+---
+version: "3.9"
+services:
+  traefik:
+    image: traefik:latest
+    restart: always
+    hostname: traefik
+    container_name: traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./volumes/traefik:/etc/traefik 
+  tenderduty:
+    container_name: tenderduty
+    image: tenderduty:latest
+    ports:
+      - 28686:28686
+    volumes:
+      - home:/var/lib/tenderduty
+      - ./volumes/tenderduty/config.yml:/var/lib/tenderduty/config.yml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+    restart: unless-stopped
+
+volumes:
+  home:

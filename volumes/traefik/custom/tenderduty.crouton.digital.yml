@@ -1,0 +1,15 @@
+http:
+  routers:
+    tenderduty_haqq:
+      entryPoints: 
+        - websecure
+      service: tenderduty_haqq
+      rule: Host(`tenderduty.crouton.digital`)
+      tls:
+        certResolver: letsencrypt
+  services:
+    tenderduty_haqq:
+      loadBalancer:
+        servers:
+          - url: "http://tenderduty:8888"
+        passHostHeader: true
